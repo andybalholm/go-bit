@@ -18,7 +18,7 @@ func MinPos(w uint64) int {
 	// “Using de Bruijn Sequences to Index a 1 in a Computer Word”,
 	// Leiserson, Prokop, and Randall, MIT, 1998.
 	if w == 0 {
-		panic("bits: MinPos(0) undefined")
+		panic("bit: MinPos(0) undefined")
 	}
 
 	// w & -w clears all bits except the one at minimum position p.
@@ -44,7 +44,7 @@ func init() {
 // It panics for w = 0.
 func MaxPos(w uint64) int {
 	if w == 0 {
-		panic("bits: MaxPos(0) undefined")
+		panic("bit: MaxPos(0) undefined")
 	}
 
 	// Fill word with ones on the right, e.g. 0x0000f308 -> 0x0000ffff.
