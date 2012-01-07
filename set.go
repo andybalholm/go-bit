@@ -295,8 +295,6 @@ func (S *Set) FlipRange(m, n int) *Set {
 	}
 
 	if m > n || m < 0 {
-		
-		
 		panic(fmt.Sprintf("Set: FlipRange(%d, %d) bounds out of range", m, n))
 	}
 
@@ -486,7 +484,7 @@ func (S *Set) SetWord(i int, w uint64) *Set {
 // Word returns the range 64i to 64i + 63 of S as a bitset represented by w.
 func (S *Set) Word(i int) (w uint64) {
 	if i < len(S.data) {
-		w = uint64(S.data[i])
+		w = S.data[i]
 	}
 	return
 }
