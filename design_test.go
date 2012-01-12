@@ -46,7 +46,6 @@ func TestDesign(t *testing.T) {
 	sum := 0
 	S.Do(func(n int) {
 		sum += n
-		return
 	})
 	fmt.Printf("sum(A ∆ B) = %d\n", sum)
 
