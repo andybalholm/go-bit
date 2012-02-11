@@ -12,12 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package bit_test
+package bit
 
-import (
-	. "bit"
-	"testing"
-)
+import "testing"
 
 func BenchmarkMinPos(b *testing.B) {
 	for i := 0; i < b.N; i++ {

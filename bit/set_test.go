@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package bit_test
+package bit
 
 import (
-	. "bit"
 	"strconv"
 	"testing"
 )
@@ -35,10 +34,10 @@ func TestNew(t *testing.T) {
 
 // Checks that the invariants for S.data and S.min hold.
 func CheckInvariants(t *testing.T, msg string, S *Set) {
-	len := len(S.Sdata())
-	cap := cap(S.Sdata())
-	data := S.Sdata()[:cap]
-	min := S.Smin()
+	len := len(S.data)
+	cap := cap(S.data)
+	data := S.data[:cap]
+	min := S.min
 	s := "Invariant for "
 
 	if len > 0 && data[len-1] == 0 {
@@ -57,7 +56,7 @@ func CheckInvariants(t *testing.T, msg string, S *Set) {
 		t.Errorf("%s%s: S = %v, S.min = %d; want %d", s, msg, S, min, minExp)
 	}
 	if len > 0 {
-		minExp = FindMinFrom(0, data)
+		minExp = findMinFrom(0, data)
 		if min != minExp {
 			t.Errorf("%s%s: S = %v, S.min = %d; want %d", s, msg, S, min, minExp)
 		}
@@ -763,7 +762,7 @@ func TestNextPow2(t *testing.T) {
 	} {
 		n := x.n
 
-		p := NextPow2(n)
+		p := nextPow2(n)
 		if p != x.p {
 			t.Errorf("nextPow2(%#x) = %#x; want %#x", n, p, x.p)
 		}
