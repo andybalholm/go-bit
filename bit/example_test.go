@@ -63,12 +63,11 @@ func ExampleSet_eratosthenes() {
 	sieve := bit.New().AddRange(2, max)
 	primes := bit.New()
 	for !sieve.IsEmpty() {
-		p := sieve.Min()
+		p := sieve.RemoveMin()
+		primes.Add(p)
 		for n := 2 * p; n <= max; n += p {
 			sieve.Remove(n)
 		}
-		sieve.Remove(p)
-		primes.Add(p)
 	}
 	fmt.Println(primes)
 	// Output: {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47}
