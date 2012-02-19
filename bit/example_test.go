@@ -19,19 +19,21 @@ import (
 	"fmt"
 )
 
-// A = {0..99}; B = {0, 50..149, 200}
 func ExampleSet() {
 	A := new(bit.Set).AddRange(0, 100)
 	B := bit.New(0, 200).AddRange(50, 150)
-	fmt.Printf("A = %v; B = %v\n", A, B)
+	fmt.Printf("A = %v\nB = %v\n", A, B)
+	// Output:
+	// A = {0..99}
+	// B = {0, 50..149, 200}
 }
 
-// sum({1..4}) = 10
 func ExampleSet_Do() {
 	A := bit.New(1, 2, 3, 4)
 	sum := 0
 	A.Do(func(n int) {
 		sum += n
 	})
-	fmt.Printf("sum(%v) = %d\n", A, sum)
+	fmt.Printf("sum %v = %d\n", A, sum)
+	// Output: sum {1..4} = 10
 }
