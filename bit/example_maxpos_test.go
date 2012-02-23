@@ -55,8 +55,8 @@ func ExampleMaxPos_allocation() {
 	// Had 0x3000, wanted 0x4000, got 0x4000.
 }
 
-// NextPowerOfTwo returns the smallest p = 1, 2, 4, ..., 2^k such that p > n,
-// or MaxInt if p > MaxInt.
+// NextPowerOfTwo returns the smallest p = 1, 2, 4, ..., 1<<k
+// such that p > n, or MaxInt if p > MaxInt.
 func NextPowerOfTwo(n int) (p int) {
 	if n <= 0 {
 		return 1
