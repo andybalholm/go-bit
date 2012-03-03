@@ -14,10 +14,11 @@
 
 package bit
 
-// Note: the const declaration below uses << to create an untyped constant.
+// Note the use of << to create an untyped constant.
+const bitsPerWord = 32 << uint(^uint(0)>>63)
 
 // Implementation-specific size of int and uint in bits.
-const BitsPerWord = 1 << (5 + ^uint(0)>>63) // either 32 or 64
+const BitsPerWord = bitsPerWord // either 32 or 64
 
 // Implementation-specific integer limit values.
 const (
