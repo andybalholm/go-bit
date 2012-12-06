@@ -67,16 +67,6 @@ func BenchmarkDo(b *testing.B) {
 	S.Do(func(i int) {})
 }
 
-func BenchmarkSetWord(b *testing.B) {
-	b.StopTimer()
-	S := New().SetWord(MaxInt>>6, 1)
-	b.StartTimer()
-
-	for i := 0; i < b.N; i++ {
-		S.SetWord(i&(MaxInt>>6), 1)
-	}
-}
-
 func BenchmarkRemoveMin(b *testing.B) {
 	b.StopTimer()
 	S := BuildTestSet(b.N)
