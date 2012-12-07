@@ -329,7 +329,7 @@ func (S *Set) FlipRange(m, n int) *Set {
 	return S
 }
 
-// Contains returns true if n ∊ S.
+// Contains returns true if n, n ≥ 0, is an element of S.
 func (S *Set) Contains(n int) bool {
 	d := S.data
 	i := n >> shift
