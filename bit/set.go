@@ -205,6 +205,60 @@ func (S *Set) Max() int {
 	return i<<shift + MaxPos(w)
 }
 
+// Next returns (n, true), where n is the smallest element of S such that m < n,
+// or (0, false) if no such element exists.
+func (S *Set) Next(m int) (n int, ok bool) {
+	d := S.data
+	len := len(d)
+
+	if len == 0 {
+		return
+	}
+
+	if min := S.min; m < min {
+		return min, true
+	}
+
+	i := len - 1
+	if max := i<<shift + MaxPos(d[i]); m >= max {
+		return
+	}
+
+	i = m >> shift
+	s := 1 + uint(m&mask)
+	w := d[i] >> s << s // Zero out bits for numbers ≤ m.
+	for w == 0 {
+		i++
+		w = d[i]
+	}
+	return i<<shift + MinPos(w), true
+}
+
+// Previous returns (n, true), where n is the largest element of S such that n < m,
+// or (0, false) if no such element exists.
+func (S *Set) Previous(m int) (n int, ok bool) {
+	d := S.data
+	len := len(d)
+
+	if len == 0 || m <= S.min {
+		return
+	}
+
+	i := len - 1
+	if max := i<<shift + MaxPos(d[i]); m > max {
+		return max, true
+	}
+
+	i = m >> shift
+	s := bpw - uint(m&mask)
+	w := d[i] << s >> s // Zero out bits for numbers ≥ m.
+	for w == 0 {
+		i--
+		w = d[i]
+	}
+	return i<<shift + MaxPos(w), true
+}
+
 // RemoveRange removes all integers between m and n-1, m ≤ n,
 // setting S to S ∖ {m..n-1}, and returns the updated set.
 func (S *Set) RemoveRange(m, n int) *Set {

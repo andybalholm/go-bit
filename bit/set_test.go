@@ -145,6 +145,55 @@ func TestMinMax(t *testing.T) {
 	CheckInvariants(t, "S.Max() panic", N)
 }
 
+func TestNextPrev(t *testing.T) {
+	for _, x := range []struct {
+		S      *Set
+		m      int
+		nextN  int
+		nextOk bool
+		prevN  int
+		prevOk bool
+	}{
+		{New(), 0, 0, false, 0, false},
+		{New(), -1, 0, false, 0, false},
+
+		{New(1), 0, 1, true, 0, false},
+		{New(1), 1, 0, false, 0, false},
+		{New(1), 2, 0, false, 1, true},
+
+		{New(0, 2), -1, 0, true, 0, false},
+		{New(0, 2), 0, 2, true, 0, false},
+		{New(0, 2), 1, 2, true, 0, true},
+		{New(0, 2), 2, 0, false, 0, true},
+		{New(0, 2), 3, 0, false, 2, true},
+
+		{New(63, 64), 63, 64, true, 0, false},
+		{New(64, 63), 64, 0, false, 63, true},
+
+		{New(100, 300), MinInt, 100, true, 0, false},
+		{New(100, 300), 0, 100, true, 0, false},
+		{New(100, 300), 100, 300, true, 0, false},
+		{New(100, 300), 200, 300, true, 100, true},
+		{New(100, 300), 300, 0, false, 100, true},
+		{New(100, 300), 400, 0, false, 300, true},
+		{New(100, 300), MaxInt, 0, false, 300, true},
+	} {
+		S := x.S
+		m := x.m
+
+		n, ok := S.Next(m)
+		if n != x.nextN || ok != x.nextOk {
+			t.Errorf("%v.Next(%d) = (%d, %v); want (%d, %v)", S, m, n, ok, x.nextN, x.nextOk)
+		}
+
+		n, ok = S.Previous(m)
+		if n != x.prevN || ok != x.prevOk {
+			t.Errorf("%v.Previous(%d) = (%d, %v); want (%d, %v)", S, m, n, ok, x.prevN, x.prevOk)
+		}
+
+	}
+}
+
 func TestRemoveMinMax(t *testing.T) {
 	for _, x := range []struct {
 		S        *Set

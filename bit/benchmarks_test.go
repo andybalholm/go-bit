@@ -67,6 +67,16 @@ func BenchmarkDo(b *testing.B) {
 	S.Do(func(i int) {})
 }
 
+func BenchmarkNext(b *testing.B) {
+	b.StopTimer()
+	S := BuildTestSet(b.N)
+	b.StartTimer()
+
+	for n, ok := S.Next(-1); ok; {
+		n, ok = S.Next(n)
+	}
+}
+
 func BenchmarkRemoveMin(b *testing.B) {
 	b.StopTimer()
 	S := BuildTestSet(b.N)
