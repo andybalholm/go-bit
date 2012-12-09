@@ -21,7 +21,15 @@ import (
 
 // Variadic Union function efficiently implemented with SetOr.
 func Union(A ...*bit.Set) *bit.Set {
-	S := new(bit.Set)
+	// Optimization: Allocate empty set with adequate capacity.
+	max := 0
+	for _, X := range A {
+		if e := X.Max(); e > max {
+			max = e
+		}
+	}
+	S := bit.New(max).Clear()
+
 	for _, X := range A {
 		S.SetOr(S, X)
 	}
