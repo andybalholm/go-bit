@@ -17,7 +17,7 @@ package bit
 
 import (
 	"bytes"
-	"fmt"
+	"strconv"
 )
 
 const (
@@ -72,7 +72,7 @@ func New(n ...int) (S *Set) {
 // Add adds n to S, setting S to S ∪ {n}, and returns the updated set.
 func (S *Set) Add(n int) *Set {
 	if n < 0 {
-		panic(fmt.Sprintf("Set: Add(%d) index out of range", n))
+		panic("Set: Add(" + strconv.Itoa(n) + ") index out of range")
 	}
 
 	if len(S.data) == 0 || n < S.min {
@@ -95,7 +95,7 @@ func (S *Set) AddRange(m, n int) *Set {
 	}
 
 	if m > n || m < 0 {
-		panic(fmt.Sprintf("Set: AddRange(%d, %d) bounds out of range", m, n))
+		panic("Set: AddRange(" + strconv.Itoa(m) + ", " + strconv.Itoa(n) + ") bounds out of range")
 	}
 
 	if len(S.data) == 0 || m < S.min {
@@ -124,7 +124,7 @@ func (S *Set) AddRange(m, n int) *Set {
 // Remove removes n from S, setting S to S ∖ {n}, and returns the updated set.
 func (S *Set) Remove(n int) *Set {
 	if n < 0 {
-		panic(fmt.Sprintf("Set: Remove(%d) index out of range", n))
+		panic("Set: Remove(" + strconv.Itoa(n) + ") index out of range")
 	}
 
 	if n < S.min {
@@ -267,7 +267,7 @@ func (S *Set) RemoveRange(m, n int) *Set {
 	}
 
 	if m > n || m < 0 {
-		panic(fmt.Sprintf("Set: RemoveRange(%d, %d) bounds out of range", m, n))
+		panic("Set: RemoveRange(" + strconv.Itoa(m) + ", " + strconv.Itoa(n) + ") bounds out of range")
 	}
 
 	n--
@@ -319,7 +319,7 @@ func (S *Set) Clear() *Set {
 // setting S to S ∆ {n}, and returns the updated set.
 func (S *Set) Flip(n int) *Set {
 	if n < 0 {
-		panic(fmt.Sprintf("Set: Flip(%d) index out of range", n))
+		panic("Set: Flip(" + strconv.Itoa(n) + ") index out of range")
 	}
 
 	if len(S.data) == 0 { // Set correct minimum when S empty.
@@ -349,7 +349,7 @@ func (S *Set) FlipRange(m, n int) *Set {
 	}
 
 	if m > n || m < 0 {
-		panic(fmt.Sprintf("Set: FlipRange(%d, %d) bounds out of range", m, n))
+		panic("Set: FlipRange(" + strconv.Itoa(m) + ", " + strconv.Itoa(n) + ") bounds out of range")
 	}
 
 	d := S.data
@@ -366,7 +366,7 @@ func (S *Set) FlipRange(m, n int) *Set {
 
 	if low == high { // Range fits in one word.
 		d[low] ^= bitMask(m&mask, n&mask)
-	} else { // Range spans at least two words.	
+	} else { // Range spans at least two words.
 		d[low] ^= bitMask(m&mask, bpw-1)
 		for i := low + 1; i < high; i++ {
 			d[i] ^= maxw
@@ -509,7 +509,8 @@ func (A *Set) Xor(B *Set) (S *Set) {
 // where 0 ≤ i ≤ ⌊MaxInt/64⌋, overwrites this range in S with w, and returns S.
 func (S *Set) SetWord(i int, w uint64) *Set {
 	if i > MaxInt/64 {
-		panic(fmt.Sprintf("Set: SetWord(%#x, %#x) index out of range", i, w))
+		panic("Set: SetWord(" + strconv.Itoa(i) + ", 0x" + strconv.FormatUint(w, 16) +
+			") index out of range")
 	}
 
 	if w == 0 && i >= len(S.data) {
@@ -747,7 +748,7 @@ func (S *Set) Do(f func(n int)) {
 // For example, the set {1, 2, 6, 5, 3} is represented as "{1..3, 5, 6}".
 func (S *Set) String() string {
 	sb := new(bytes.Buffer)
-	fmt.Fprintf(sb, "{")
+	sb.WriteString("{")
 
 	a, b := -1, -2 // keeps track of a range a..b of elements
 	S.Do(func(n int) {
@@ -763,21 +764,28 @@ func (S *Set) String() string {
 	if S.Size() > 0 {
 		sb.Truncate(sb.Len() - 2) // Remove trailing ", ".
 	}
-	fmt.Fprintf(sb, "}")
+	sb.WriteString("}")
 	return sb.String()
 }
 
-// writeRange writes either "", "a", "a, b, " or "a..b" to buffer.
+// writeRange writes either "", "a", "a, b, " or "a..b, " to buffer.
 func writeRange(sb *bytes.Buffer, a, b int) {
 	switch {
 	case a > b:
-		// fmt.Fprintf(sb, "")
+		// sb.WriteString(sb, "")
 	case a == b:
-		fmt.Fprintf(sb, "%d, ", a)
+		sb.WriteString(strconv.Itoa(a))
+		sb.WriteString(", ")
 	case a+1 == b:
-		fmt.Fprintf(sb, "%d, %d, ", a, b)
+		sb.WriteString(strconv.Itoa(a))
+		sb.WriteString(", ")
+		sb.WriteString(strconv.Itoa(b))
+		sb.WriteString(", ")
 	default:
-		fmt.Fprintf(sb, "%d..%d, ", a, b)
+		sb.WriteString(strconv.Itoa(a))
+		sb.WriteString("..")
+		sb.WriteString(strconv.Itoa(b))
+		sb.WriteString(", ")
 	}
 }
 

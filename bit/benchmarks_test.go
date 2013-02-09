@@ -67,6 +67,13 @@ func BenchmarkDo(b *testing.B) {
 	S.Do(func(i int) {})
 }
 
+func BenchmarkString(b *testing.B) {
+	b.StopTimer()
+	S := BuildTestSet(b.N) // As Do is pretty fast, S can be pretty big.
+	b.StartTimer()
+
+	S.String()
+}
 func BenchmarkNext(b *testing.B) {
 	b.StopTimer()
 	S := BuildTestSet(b.N)
