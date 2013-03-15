@@ -207,7 +207,7 @@ func (S *Set) Max() int {
 
 // Next returns (n, true), where n is the smallest element of S such that m < n,
 // or (0, false) if no such element exists.
-func (S *Set) Next(m int) (n int, ok bool) {
+func (S *Set) Next(m int) (n int, found bool) {
 	d := S.data
 	len := len(d)
 
@@ -236,7 +236,7 @@ func (S *Set) Next(m int) (n int, ok bool) {
 
 // Previous returns (n, true), where n is the largest element of S such that n < m,
 // or (0, false) if no such element exists.
-func (S *Set) Previous(m int) (n int, ok bool) {
+func (S *Set) Previous(m int) (n int, found bool) {
 	d := S.data
 	len := len(d)
 

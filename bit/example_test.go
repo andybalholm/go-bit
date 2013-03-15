@@ -33,7 +33,7 @@ func ExampleSet_Next() {
 	A := bit.New(2, 3, 5, 7, 11, 13)
 
 	// Print all single digit numbers in A.
-	for n, ok := A.Next(-1); ok && n < 10; n, ok = A.Next(n) {
+	for n, found := A.Next(-1); found && n < 10; n, found = A.Next(n) {
 		fmt.Printf("%d ", n)
 	}
 	// Output: 2 3 5 7
@@ -44,7 +44,7 @@ func ExampleSet_Previous() {
 
 	// Print all numbers in A in reverse order.
 	if !A.IsEmpty() {
-		for n, ok := A.Max(), true; ok; n, ok = A.Previous(n) {
+		for n, found := A.Max(), true; found; n, found = A.Previous(n) {
 			fmt.Printf("%d ", n)
 		}
 	}
@@ -83,7 +83,7 @@ func ExampleSet_words() {
 func ExampleSet_eratosthenes() {
 	const max = 50
 	sieve := bit.New().AddRange(2, max)
-	for p, ok := 2, true; ok; p, ok = sieve.Next(p) {
+	for p, found := 2, true; found; p, found = sieve.Next(p) {
 		for n := 2 * p; n <= max; n += p {
 			sieve.Remove(n)
 		}

@@ -74,13 +74,14 @@ func BenchmarkString(b *testing.B) {
 
 	S.String()
 }
+
 func BenchmarkNext(b *testing.B) {
 	b.StopTimer()
 	S := BuildTestSet(b.N)
 	b.StartTimer()
 
-	for n, ok := S.Next(-1); ok; {
-		n, ok = S.Next(n)
+	for n, found := S.Next(-1); found; {
+		n, found = S.Next(n)
 	}
 }
 

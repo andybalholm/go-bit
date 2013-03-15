@@ -147,12 +147,12 @@ func TestMinMax(t *testing.T) {
 
 func TestNextPrev(t *testing.T) {
 	for _, x := range []struct {
-		S      *Set
-		m      int
-		nextN  int
-		nextOk bool
-		prevN  int
-		prevOk bool
+		S         *Set
+		m         int
+		nextN     int
+		nextFound bool
+		prevN     int
+		prevFound bool
 	}{
 		{New(), 0, 0, false, 0, false},
 		{New(), -1, 0, false, 0, false},
@@ -181,14 +181,14 @@ func TestNextPrev(t *testing.T) {
 		S := x.S
 		m := x.m
 
-		n, ok := S.Next(m)
-		if n != x.nextN || ok != x.nextOk {
-			t.Errorf("%v.Next(%d) = (%d, %v); want (%d, %v)", S, m, n, ok, x.nextN, x.nextOk)
+		n, found := S.Next(m)
+		if n != x.nextN || found != x.nextFound {
+			t.Errorf("%v.Next(%d) = (%d, %v); want (%d, %v)", S, m, n, found, x.nextN, x.nextFound)
 		}
 
-		n, ok = S.Previous(m)
-		if n != x.prevN || ok != x.prevOk {
-			t.Errorf("%v.Previous(%d) = (%d, %v); want (%d, %v)", S, m, n, ok, x.prevN, x.prevOk)
+		n, found = S.Previous(m)
+		if n != x.prevN || found != x.prevFound {
+			t.Errorf("%v.Previous(%d) = (%d, %v); want (%d, %v)", S, m, n, found, x.prevN, x.prevFound)
 		}
 
 	}
