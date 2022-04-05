@@ -15,7 +15,7 @@
 package bit_test
 
 import (
-	bit "."
+	bit "github.com/andybalholm/go-bit"
 	"fmt"
 )
 
