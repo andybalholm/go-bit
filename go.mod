@@ -1,3 +1,3 @@
 module github.com/andybalholm/go-bit
 
-go 1.16
+go 1.16.0
